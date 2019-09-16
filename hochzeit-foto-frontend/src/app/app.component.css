@@ -1,0 +1,157 @@
+h3 {
+  font-size: 33px;
+  text-align: center;
+  width: 100%;
+}
+
+.wrapper {
+  height: 100%;
+}
+.state-wrapper {
+  width: calc(100% - 40px);
+  background-color: #ff6f00;
+  color: #ffffff;
+  padding: 10px 20px;
+}
+
+.loading-image-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 10px;
+}
+.loading-image-wrapper .progress-spinner {
+  float: left;
+  margin-right: 20px;
+  flex-shrink: 0;
+}
+
+.content-wrapper {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+}
+.images-thumbnails {
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+}
+.images-thumbnails h3 i {
+  margin-left: 10px;
+}
+.images-thumbnails h3 i:hover {
+  cursor: pointer;
+}
+.images-thumbnails img {
+  width: 300px;
+  opacity: 0.5;
+}
+.images-thumbnails img:hover {
+  cursor: pointer;
+}
+.images-thumbnails .image-thumbnail-selected {
+  opacity: 1;
+}
+.scroll-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  flex-grow: 1;
+}
+
+.big-image {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.big-image img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.properties-panel {
+  padding: 0 15px;
+  background-color: rgba(255,255,255,0.45);
+  width: 400px;
+  right: 0px;
+  overflow: visible;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.properties-panel p {
+  text-align: center;
+}
+.properties-panel ol li, .properties-panel p, .properties-panel button {
+  font-size: 25px;
+}
+.properties-panel ol li {
+  margin-bottom: 12px;
+}
+.properties-panel .button-wrapper {
+  margin: 20px 30px;
+  width: calc(100% - 40px);
+}
+.properties-panel button {
+  width: 100%;
+  padding: 10px 0;
+}
+
+.warning-wrapper {
+  height: 100%;
+  width: 100%;
+  margin-top: 85px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: center;
+}
+.warning-wrapper i {
+  font-size: 60px;
+  color: #3f51b5;
+  margin-right: 18px;
+  margin-bottom: 11px;
+}
+.warning-wrapper p {
+  font-size: 24px;
+}
+
+/* print layout */
+.print-wrapper {
+  display: none;
+  overflow: hidden;
+}
+.image-print {
+  overflow: hidden;
+  height: 60.85mm;
+}
+.image-print img {
+  width: 100%;
+}
+.image-print1 {
+  margin-bottom: 2.9mm;
+}
+.image-print2 {
+  padding-top: 2.9mm;
+  border-top: #ececec dashed thin;
+}
+.image-print-lettering {
+  width: 90%;
+  margin-top: 5px;
+}
+@media print {
+  .wrapper {
+    display: none;
+  }
+  .print-wrapper {
+    margin: 2.9mm;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}

@@ -1,0 +1,5 @@
+foto-server/data/
+foto-server/\.idea/
+foto-server/node_modules/
+
+flashair/uploaded/

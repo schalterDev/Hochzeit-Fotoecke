@@ -1,0 +1,53 @@
+<div class="wrapper">
+<div *ngIf="stateWebsocket != connectedState" class="state-wrapper"><b>Status: {{stateWebsocket}}</b>, wenn das Problem bestehen bleibt bei Martin (Daniels Bruder) melden</div>
+<div *ngIf="error != null">Error: {{error}}</div>
+
+<div class="content-wrapper">
+  <div class="images-thumbnails">
+    <h3>
+      Foto auswählen
+<!--      <i class="material-icons" (click)="loadThumbnails()">refresh</i>-->
+    </h3>
+    <div *ngIf="loadingNewImage" class="loading-image-wrapper">
+      <mat-spinner class="progress-spinner" [diameter]="50"></mat-spinner>
+      Ein neues Bild wird von der Kamera heruntergeladen, bitte warten
+    </div>
+    <div class="scroll-container">
+      <img *ngFor="let thumbnail of thumbnails.slice(0, 10)"
+           (click)="imageChosen(thumbnail)"
+           [src]="thumbnail"
+           [ngClass]="{'image-thumbnail-selected':thumbnail===bigImageSource}">
+    </div>
+  </div>
+  <div class="big-image">
+    <h3>Fotos fürs Gästebuch</h3>
+    <img
+      alt=""
+      [src]="bigImageSource">
+  </div>
+  <div class="properties-panel">
+    <h3>Anleitung</h3>
+    <ol>
+      <li>Mache ein Bild mit der Kamera, die auf dem Stativ steht.</li>
+      <li>Entferne dich mit der Kamera nicht zu weit vom Laptop (8 Meter).</li>
+      <li>Du kannst so viele Fotos machen, wie du magst.</li>
+      <li>Nach ein paar Sekunden erscheinen die Bilder hier auf dem Bildschirm.</li>
+      <li>Wähle links in der Spalte das Bild aus, das dir am besten gefällt.</li>
+      <li>Klicke anschließend unten auf den Button "Drucken".</li>
+      <li>Es öffnet sich nun ein Fenster. Bestätige hier nochmal mit einem Klick auf "Drucken".</li>
+    </ol>
+    <div class="button-wrapper">
+      <button mat-raised-button color="primary" (click)="print()">Drucken</button>
+    </div>
+    <div class="warning-wrapper">
+      <i class="material-icons">help_outline</i>
+      <p>Bei Problemen bitte an Martin <br> (Daniels Bruder) wenden.</p>
+    </div>
+  </div>
+</div>
+</div>
+<div class="print-wrapper">
+  <div class="image-print image-print1"><img [src]="bigImageSource"></div>
+  <div class="image-print image-print2"><img [src]="bigImageSource"></div>
+  <img class="image-print-lettering" src="assets/handlettering-namen.png">
+</div>
