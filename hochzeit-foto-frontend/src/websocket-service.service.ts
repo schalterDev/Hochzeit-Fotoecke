@@ -68,10 +68,6 @@ export class WebsocketServiceService {
 
     const observableObject = new Observable((obs: Observer<MessageEvent>) => {
       this.dataSubscribers.push(obs);
-
-
-
-      // return ws.close.bind(ws);
     });
 
     const observer = {

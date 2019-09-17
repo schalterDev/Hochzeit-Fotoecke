@@ -125,10 +125,17 @@ h3 {
 .print-wrapper {
   display: none;
   overflow: hidden;
+  flex-direction: column;
+  align-items: center;
+  margin: 2.9mm;
+  height: calc(100% - 5.8mm);
+  box-sizing: border-box;
 }
 .image-print {
   overflow: hidden;
-  height: 60.85mm;
+  height: 100%;
+  flex-shrink: 1;
+  flex-grow: 1;
 }
 .image-print img {
   width: 100%;
@@ -143,15 +150,13 @@ h3 {
 .image-print-lettering {
   width: 90%;
   margin-top: 5px;
+  flex-shrink: 0;
 }
 @media print {
   .wrapper {
     display: none;
   }
   .print-wrapper {
-    margin: 2.9mm;
     display: flex;
-    flex-direction: column;
-    align-items: center;
   }
 }

@@ -1,7 +1,11 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {WebsocketServiceService, WebsocketState} from '../websocket-service.service';
-import {LOCAL_STORAGE, StorageService} from 'angular-webstorage-service';
 import {NetworkRequestService} from '../network-request.service';
+
+interface LoadingImage {
+  url: string;
+  error: boolean;
+}
 
 @Component({
   selector: 'app-root',
@@ -12,12 +16,13 @@ export class AppComponent implements OnInit {
 
   connectedState: WebsocketState = WebsocketState.CONNECTED;
 
-  loadingNewImage = false;
-  error = null;
   stateWebsocket: WebsocketState = WebsocketState.DISCONNECTED;
 
   bigImageSource: string;
   thumbnails = [];
+
+  private imagesLoading: Array<string> = [];
+  private imagesErrored: Array<string> = [];
 
   constructor(
     private networkRequests: NetworkRequestService,
@@ -29,14 +34,13 @@ export class AppComponent implements OnInit {
     this.wsService.imageUploaded().subscribe(webSocketEvent => {
       console.log('websocket event:', webSocketEvent);
       if (webSocketEvent.command === 'download-start') {
-        this.loadingNewImage = true;
+        this.imagesLoading.push(webSocketEvent.data);
+        this.removeElementFromErroredList(webSocketEvent.data);
       } else if (webSocketEvent.command === 'downloaded') {
-        this.loadingNewImage = false;
-        this.error = null;
         this.newImage(webSocketEvent.data);
+        this.removeElementFromLoadingList(webSocketEvent.data);
       } else if (webSocketEvent.command === 'error') {
-        this.error = webSocketEvent.data;
-        this.loadingNewImage = false;
+        this.removeElementFromLoadingList(webSocketEvent.data);
       } else {
         console.error('unsupported command:', webSocketEvent.command);
       }
@@ -45,6 +49,39 @@ export class AppComponent implements OnInit {
     this.wsService.status().subscribe(state => {
       this.stateWebsocket = state;
     });
+  }
+
+  private removeElementFromLoadingList(element: string, error: boolean = false) {
+    let index = -1;
+    this.imagesLoading.forEach((imageLoading, counter) => {
+      if (imageLoading === element) {
+        index = counter;
+      }
+    });
+
+    if (index > -1) {
+      if (error) {
+        this.imagesErrored.push(this.imagesLoading[index]);
+      }
+      this.imagesLoading.splice(index, 1);
+    }
+
+    if (!error) {
+      this.removeElementFromErroredList(element);
+    }
+  }
+
+  private removeElementFromErroredList(element: string) {
+    let index = -1;
+    this.imagesErrored.forEach((image, counter) => {
+      if (image === element) {
+        index = counter;
+      }
+    });
+
+    if (index > -1) {
+      this.imagesErrored.splice(index, 1);
+    }
   }
 
   imageChosen(image: string) {
@@ -60,7 +97,7 @@ export class AppComponent implements OnInit {
       this.thumbnails = thumbnails;
 
       if (lastThumbnailAsBigImage) {
-        this.bigImageSource = this.thumbnails[0]
+        this.bigImageSource = this.thumbnails[0];
       }
     });
   }

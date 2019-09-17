@@ -1,6 +1,10 @@
 <div class="wrapper">
 <div *ngIf="stateWebsocket != connectedState" class="state-wrapper"><b>Status: {{stateWebsocket}}</b>, wenn das Problem bestehen bleibt bei Martin (Daniels Bruder) melden</div>
-<div *ngIf="error != null">Error: {{error}}</div>
+<div *ngIf="imagesErrored.length !== 0" class="state-wrapper">
+  <span *ngIf="imagesErrored.length === 1">Ein Bild </span>
+  <span *ngIf="imagesErrored.length > 1">{{imagesErrored.length}} Bilder </span>
+  konnten nicht geladen werden.
+</div>
 
 <div class="content-wrapper">
   <div class="images-thumbnails">
@@ -8,9 +12,10 @@
       Foto auswählen
 <!--      <i class="material-icons" (click)="loadThumbnails()">refresh</i>-->
     </h3>
-    <div *ngIf="loadingNewImage" class="loading-image-wrapper">
+    <div *ngIf="imagesLoading.length != 0" class="loading-image-wrapper">
       <mat-spinner class="progress-spinner" [diameter]="50"></mat-spinner>
-      Ein neues Bild wird von der Kamera heruntergeladen, bitte warten
+      <span *ngIf="imagesLoading.length == 1">Ein neues Bild wird von der Kamera heruntergeladen, bitte warten</span>
+      <span *ngIf="imagesLoading.length > 1">{{imagesLoading.length}} Bilder werden von der Kamera heruntergeladen, bitte warten</span>
     </div>
     <div class="scroll-container">
       <img *ngFor="let thumbnail of thumbnails.slice(0, 10)"
