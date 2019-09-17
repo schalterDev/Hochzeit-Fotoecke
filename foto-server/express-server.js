@@ -24,19 +24,20 @@ function startServer() {
   app.use(bodyParser.text());
   app.use(folder, express.static('data'));
 
-  app.ws('/', function(ws, req) {
-    // ws.on('message', function(msg) {
-    //   console.log("Message:", msg);
-    // })
-  });
+  app.ws('/', function(ws, req) {});
 
   app.post('/', (request, response) => {
     console.log('POST /');
-    response.writeHead(200, {'Content-Type': 'text/html'});
-    response.end();
-
-    // console.log(request)
-    photoTaken(request.body)
+    photoTaken(request.body).then((success) => {
+      if (success) {
+        response.writeHead(200, {'Content-Type': 'text/html'});
+        response.end();
+      } else {
+        console.error('Error loading image from camera');
+        response.writeHead(400);
+        response.end();
+      }
+    });
   });
 
   app.get('/thumbnails', (request, response) => {
@@ -67,40 +68,45 @@ function sendDataOverWs(command, data) {
   })
 }
 
-function photoTaken(path) {
+async function photoTaken(path) {
   console.log("photo taken:", path);
   const fileName = path.split("/").pop();
 
   const downloadUrl = URL_CAMERA + path;
-  fileDownloadStart(downloadUrl);
+  fileDownloadStart(downloadUrl, filename);
 
   let options = {
     url: downloadUrl,
     dest: 'data/' + fileName
   };
 
-  download.image(options)
-    .then(({ filename, image }) => {
-      fileDownloadEnd(fileName);
-    })
-    .catch((err) => fileDownloadError(err.message))
+  try {
+    const { filename, image } = await download.image(options);
+    fileDownloadEnd(filename);
+    return true;
+  } catch (err) {
+    fileDownloadError(err.message, fileName);
+    return false;
+  }
 }
 
-function fileDownloadStart(downloadUrl) {
+function fileDownloadStart(downloadUrl, filename) {
   console.log("file download start:", downloadUrl);
-  sendDataOverWs("download-start", "");
+  sendDataOverWs("download-start", getAddressFromFilename(filename));
 }
 
-function fileDownloadEnd(fileName) {
-  console.log("file downloaded:", fileName);
-
-  sendDataOverWs("downloaded", `http://localhost${folder}/${fileName}`);
+function fileDownloadEnd(filename) {
+  console.log("file downloaded:", filename);
+  sendDataOverWs("downloaded", getAddressFromFilename(filename));
 }
 
-function fileDownloadError(error) {
+function fileDownloadError(error, filename) {
   console.log("file download error:", error);
+  sendDataOverWs("error", getAddressFromFilename(filename));
+}
 
-  sendDataOverWs("error", error.toString());
+function getAddressFromFilename(filename) {
+  return `http://localhost${folder}/${filename}`;
 }
 
 startServer();
