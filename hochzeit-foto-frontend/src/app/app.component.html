@@ -52,7 +52,9 @@
 </div>
 </div>
 <div class="print-wrapper">
-  <div class="image-print image-print1"><img [src]="bigImageSource"></div>
-  <div class="image-print image-print2"><img [src]="bigImageSource"></div>
+  <div class="image-print" [style.background]="'url(' + bigImageSource + ')'"></div>
+  <img class="image-print-lettering" src="assets/handlettering-namen.png">
+  <div class="print-border"></div>
+  <div class="image-print" [style.background]="'url(' + bigImageSource + ')'"></div>
   <img class="image-print-lettering" src="assets/handlettering-namen.png">
 </div>

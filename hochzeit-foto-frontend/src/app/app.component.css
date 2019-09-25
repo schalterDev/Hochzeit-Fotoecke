@@ -131,25 +131,30 @@ h3 {
   height: calc(100% - 5.8mm);
   box-sizing: border-box;
 }
+.print-border {
+  height: 0;
+  width: 100%;
+  border-top: #ececec dashed thin;
+  margin-top: 2.9mm;
+  margin-bottom: 2.9mm;
+}
 .image-print {
   overflow: hidden;
   height: 100%;
+  width: 100%;
   flex-shrink: 1;
   flex-grow: 1;
+
+  background-position: center !important;
+  background-size: cover !important;
 }
 .image-print img {
   width: 100%;
-}
-.image-print1 {
-  margin-bottom: 2.9mm;
-}
-.image-print2 {
-  padding-top: 2.9mm;
-  border-top: #ececec dashed thin;
+  margin-top: -3mm;
 }
 .image-print-lettering {
-  width: 90%;
-  margin-top: 5px;
+  height: 10mm;
+  margin-top: 1mm;
   flex-shrink: 0;
 }
 @media print {
