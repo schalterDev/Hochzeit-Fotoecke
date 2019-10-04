@@ -73,16 +73,17 @@ async function photoTaken(path) {
   const fileName = path.split("/").pop();
 
   const downloadUrl = URL_CAMERA + path;
-  fileDownloadStart(downloadUrl, filename);
+  fileDownloadStart(downloadUrl, fileName);
 
   let options = {
     url: downloadUrl,
-    dest: 'data/' + fileName
+    dest: 'data/' + fileName,
+    timeout: 3000
   };
 
   try {
     const { filename, image } = await download.image(options);
-    fileDownloadEnd(filename);
+    fileDownloadEnd(filename.split("/").pop());
     return true;
   } catch (err) {
     fileDownloadError(err.message, fileName);
